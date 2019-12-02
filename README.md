@@ -1,3 +1,3 @@
 # Benvinguts al repositori de Processing!
-# Cançons
+## Cançons
 Les haureu de penjar dins la carpeta de `data`.
