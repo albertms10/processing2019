@@ -7,7 +7,7 @@ El nom de la classe haurà de ser el vostre nom.
 
 ```java
 class Lali {
-  /* contingut */
+  // contingut
 }
 ```
 
@@ -15,7 +15,7 @@ En cas que el nom estigui repetit, caldrà afegir la inicial del cognom.
 
 ```java
 class AlbertM {
-  /* contingut */
+  // contingut
 }
 ```
 
@@ -26,7 +26,7 @@ El nom de la classe haurà d'anar concatenat amb les vostres inicials de nom i c
 
 ```java
 class Fly_AB {
-  /* contingut */
+  // contingut
 }
 ```
 
