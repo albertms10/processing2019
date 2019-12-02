@@ -25,8 +25,8 @@ boolean[] buttonS = new boolean[10];
 color bgColor = 0;
 
 void setup() {
-  size(1000, 800);
-  //fullScreen();
+  size(1000, 800, P2D);
+  // fullScreen(P2D);
 
   // inicialitzem la Minim
   minim = new Minim(this);
