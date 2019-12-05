@@ -1,5 +1,8 @@
 # Benvinguts al repositori de Processing!
 
+## Cançons
+Les haureu de penjar al directori `projecte_final_2019/data/`.
+
 ## Classes principals
 Les classes de Processing principals les haureu de penjar al directori `projecte_final_2019/`.
 
@@ -49,6 +52,3 @@ class Wings_AB {
   // contingut de Wings_AB
 }
 ```
-
-## Cançons
-Les haureu de penjar al directori `projecte_final_2019/data/`.
