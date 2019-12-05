@@ -24,6 +24,8 @@ Les classes de Processing addicionals les haureu de penjar al mateix directori q
 
 El nom de la classe haurà d'anar concatenat amb les vostres inicials de nom i cognom.
 
+Per tal de minimitzar el nombre d'arxius —i en cas que disposeu de moltes classes addicionals—, en un mateix arxiu podreu escriure les classes seguides.
+
 ```java
 class Fly_AB {
   // contingut
