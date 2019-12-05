@@ -7,25 +7,31 @@ class Lali extends Animacio {
   }
 
   void reset() {
-  bgColor = color(random(255), random(255), random(255));
+    bgColor = color(random(255), random(255), random(255));
     background(bgColor);
   }
 
   void run() {
-    if(buttonM[1]){
+    if(buttonM[1]) {
       bgColor = color(random(255), random(255), random(255));
-      buttonM[1]=false;
+      buttonM[1] = false;
     }
   }
 
   void display() {
     background(bgColor);
     if (buttonS[1]) {
-      ellipse(width/2, height/2, slider[1], slider[2]);
+      ellipse(width / 2, height / 2, slider[1], slider[2]);
     }
   }
   
-  void f_keyPressed(){
-    println("I'm here!");
-  }
+  void f_keyPressed() {}
+  
+  void f_keyReleased() {}
+
+  void f_mousePressed() {}
+
+  void f_mouseDrgged() {}
+
+  void f_mouseReleased() {}
 }
