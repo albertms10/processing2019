@@ -12,9 +12,12 @@ FFT fft;
 Animacio a;
 boolean animationOn;
 
-// variables per al MIDI
-// les variables son globals i es poden utilitzar dins de les classes
-// les funcions de gestio del MIDI s'han de cridar des de la classe principal
+/** 
+ * Variables per al MIDI
+ * Les variables són globals i es poden utilitzar dins de les classes
+ * Les funcions de gestió del MIDI s'han de cridar des de la classe principal
+ */
+ 
 MidiBus bus;
 int[] slider = new int[10];
 int[] knob = new int[10];
@@ -63,19 +66,22 @@ void keyPressed() {
       a.f_keyPressed();
     }
   } else {
-    switch(key) {
-    case '1':
-      a = new Lali("songLali.mp3");
-      a.reset();
-      animationOn = true;
+    /**
+     * TODO
+     */
+    switch (key) {
+      case '1':
+        a = new Nom("song.mp3");
+        animationOn = true;
+        break;
     }
   }
 }
 
 void controllerChange(int channel, int number, int value) {
-  //  println("Channel:" + channel);
-  //  println("Number:" + number);
-  //  println("Value:" + value);
+  // println("Channel:" + channel);
+  // println("Number:" + number);
+  // println("Value:" + value);
 
   if (number % 10 == 1) {
     slider[number / 10] = value;
