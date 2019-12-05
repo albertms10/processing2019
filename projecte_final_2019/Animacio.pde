@@ -10,15 +10,15 @@ abstract class Animacio {
     beat.setSensitivity(300);  // tots igual?
   }
 
-  abstract void reset();
+  abstract void init();
 
   abstract void run();
 
   abstract void display();
 
   /** Aquestes funcions (potser no calen totes), 
-   *  les haurem de programar com si fossin les funcions de teclat i ratoli.
-   *  Les cridem des del programa principal quan la nostra animacio esta activa.
+   *  les haurem de programar com si fossin les funcions de teclat i ratolí.
+   *  Les cridem des del programa principal quan la nostra animació està activa.
    */
   
   abstract void f_keyPressed();
