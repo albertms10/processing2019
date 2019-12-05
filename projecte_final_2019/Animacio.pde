@@ -1,38 +1,33 @@
 abstract class Animacio {
-
   Animacio(String nameSong) {
     setupMusica(nameSong);
   }
-  
+
   void setupMusica(String nameSong) {
     song = minim.loadFile(nameSong);
     beat = new BeatDetect(song.bufferSize(), song.sampleRate());
 
     beat.setSensitivity(300);  // tots igual?
-
   }
 
-  void reset() {
-  }
+  abstract void reset();
 
-  void run() {
-  }
+  abstract void run();
 
-  void display() {
-  }
+  abstract void display();
 
+  /** Aquestes funcions (potser no calen totes), 
+   *  les haurem de programar com si fossin les funcions de teclat i ratoli.
+   *  Les cridem des del programa principal quan la nostra animacio esta activa.
+   */
   
-  // Aquestes funcions (potser no calen totes), 
-  // les haurem de programar com si fossin les funcions de teclat i ratoli.
-  // Les cridem des del programa principal quan la nostra animacio esta activa.
-  // 
-  void f_keyPressed(){}
-  
-  void f_keyReleased(){}
-  
-  void f_mousePressed(){}
-  
-  void f_mouseDrgged(){}
-  
-  void f_mouseReleased(){}
+  abstract void f_keyPressed();
+
+  abstract void f_keyReleased();
+
+  abstract void f_mousePressed();
+
+  abstract void f_mouseDrgged();
+
+  abstract void f_mouseReleased();
 }
