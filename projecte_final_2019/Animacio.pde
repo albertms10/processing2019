@@ -7,7 +7,7 @@ abstract class Animacio {
     song = minim.loadFile(nameSong);
     beat = new BeatDetect(song.bufferSize(), song.sampleRate());
 
-    beat.setSensitivity(300);  // tots igual?
+    beat.setSensitivity(300);
   }
 
   abstract void init();
@@ -16,7 +16,7 @@ abstract class Animacio {
 
   abstract void display();
 
-  /** Aquestes funcions (potser no calen totes), 
+  /** Aquestes funcions (potser no calen totes)
    *  les haurem de programar com si fossin les funcions de teclat i ratolí.
    *  Les cridem des del programa principal quan la nostra animació està activa.
    */
