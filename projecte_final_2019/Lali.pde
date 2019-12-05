@@ -12,7 +12,7 @@ class Lali extends Animacio {
   }
 
   void run() {
-    if(buttonM[1]) {
+    if (buttonM[1]) {
       bgColor = color(random(255), random(255), random(255));
       buttonM[1] = false;
     }
