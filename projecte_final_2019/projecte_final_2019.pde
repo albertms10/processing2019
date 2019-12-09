@@ -39,8 +39,7 @@ void setup() {
    * Després, posarem el nom que ens interessi a la creadora del bus.
    */
   // MidiBus.list();
-  bus = new MidiBus(this, "nanoKONTROL2", -1); 
-  // bus = new MidiBus(this, "nan0KONTROL", -1);
+  bus = new MidiBus(this, 0, -1); 
 
   animationOn = false;
 }
