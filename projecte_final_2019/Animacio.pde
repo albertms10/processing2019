@@ -40,7 +40,7 @@ abstract class Animacio {
 
   abstract void f_mousePressed();
 
-  abstract void f_mouseDrgged();
+  abstract void f_mouseDragged();
 
   abstract void f_mouseReleased();
 }
