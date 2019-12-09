@@ -99,6 +99,22 @@ void keyPressed() {
   }
 }
 
+void keyReleased(){
+  a.f_keyReleased();
+}
+
+void mousePressed(){
+  a.f_mousePressed();
+}
+
+void mouseDragged(){
+  a.f_mouseDragged();
+}
+
+void mouseReleased(){
+  a.f_mouseReleased();
+}
+
 void controllerChange(int channel, int number, int value) {
   // println("Channel:" + channel);
   // println("Number:" + number);
