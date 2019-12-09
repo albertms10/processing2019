@@ -77,7 +77,7 @@ void keyPressed() {
         break;
         
       case '3':
-        a = new Anna("pinya.mp3");
+        a = new Anna("songAnnaS.mp3");
         animationOn = true;
         break;
         
