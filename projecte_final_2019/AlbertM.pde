@@ -2,9 +2,14 @@ class AlbertM extends Animacio {
   int n;
   ArrayList<Fly_AM> flies = new ArrayList<Fly_AM>();
   float songLength;
+  Wind wind;
 
   AlbertM(String songName) {
     super(songName);
+
+    n = 1;
+    wind = new Wind(10);
+
     init();
     song.play();
   }
@@ -16,9 +21,8 @@ class AlbertM extends Animacio {
 
     fft = new FFT(song.bufferSize(), song.sampleRate());
     songLength = song.length();
-    n = 2;
+
     for (int i = 0; i < n; i++) {
-      println("Nova mosca");      
       flies.add(new Fly_AM(width * .1, height * .1));
     }
   }
@@ -28,6 +32,8 @@ class AlbertM extends Animacio {
 
   void display() {
     background(bgColor);
+
+    wind.draw();
 
     for (Fly_AM fly : flies) {
       fly
@@ -64,7 +70,7 @@ class AlbertM extends Animacio {
   void f_mousePressed() {
   }
 
-  void f_mouseDrgged() {
+  void f_mouseDragged() {
   }
 
   void f_mouseReleased() {
