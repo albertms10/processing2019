@@ -78,11 +78,6 @@ class Diana_MV {
     cercles = new Cercle_MV[nCercles];
 
     init();
-    /*
-    println(">> Diana creada");
-    println(" - x: " + x + ", y: " + y);
-    println(" - diam: " + diam);
-    println(" - cercles: " + nCercles);*/
   }
 
   void init() {
@@ -114,7 +109,7 @@ class Diana_MV {
 class Palm_MV {
 
   float inc;
-  float llargada;
+  int llargada = 0;
   int linies;
   float angle;
 
@@ -127,16 +122,15 @@ class Palm_MV {
   void display(){
     pushMatrix();
     inc += 0.033;
-    if(llargada < 25){
-      llargada += 0.1;
-    }
-  
+    
+    llargada = slider[1]; // la llargada depen de l'slider
+    
     angle = sin(inc)/20.0 ;
     
     translate(width/2,height/2); 
     
     for (int i = 0; i < linies; i++) { 
-      linia((int)llargada, angle); 
+      linia(llargada, angle); 
       rotate(PI*2/linies); 
     }
     popMatrix();
@@ -193,7 +187,8 @@ class Stars_MV{
   }
   
   
-  void display(){
+  void display(int numStars){
+    
     for (int i = 0; i< numStars; i++){
         
       if(op[i]){

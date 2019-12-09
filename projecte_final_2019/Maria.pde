@@ -24,14 +24,13 @@ class Maria extends Animacio{
     song.play();
   }
 
-  /**
-   * Mètode equivalent al setup()
-   */
+  //Mètode equivalent al setup()
+   
   void init() {
       
     palm = new Palm_MV();
     
-    stars =  new Stars_MV(120);
+    stars =  new Stars_MV(127);
     
     click =  new Clicks_MV();
     sel = new int[3];
@@ -67,21 +66,22 @@ class Maria extends Animacio{
   
     kick.display(kickD);
   }
-  /**
-   * Mètode per a càlculs, si cal
-   */
+  
+  //Mètode per a càlculs, si cal
+  
   void run() {}
-
-  /**
-   * Mètode equivalent al draw()
-   */
+  
+  //Mètode equivalent al draw()
+  
   void display() {
     
+    println(slider[1]);
     background(0);
        
     palm.display();
     
-    stars.display();
+    stars.display(slider[2]);
+    
     
     for(int i=0; i<3;i++){
       if(sel[i] != -1 && count[i] != -1){
