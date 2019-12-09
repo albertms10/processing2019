@@ -71,7 +71,27 @@ void keyPressed() {
      */
     switch (key) {
       case '1':
-        a = new Nom("song.mp3");
+        a = new Maria("puzzle.mp3");
+        animationOn = true;
+        break;
+      case '2':
+        a = new AlbertM("flight.mp3");
+        animationOn = true;
+        break;
+      case '3':
+        a = new Anna("pinya.mp3");
+        animationOn = true;
+        break;
+      case '4':
+        a = new AlbertF("songAlbertF.mp3");
+        animationOn = true;
+        break;
+      case '5':
+        a = new Sergi("songSergiA.mp3");
+        animationOn = true;
+        break;
+      case '6':
+        a = new Tomas("songTomas.mp3");
         animationOn = true;
         break;
     }
