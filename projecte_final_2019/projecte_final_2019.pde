@@ -65,10 +65,6 @@ void keyPressed() {
       a.f_keyPressed();
     }
   } else {
-    /**
-     * TODO - Un cop acabats el projectes,
-     *        haurem d'afegir cases al switch.
-     */
     switch (key) {
       case '1':
         a = new Maria("puzzle.mp3");
