@@ -12,7 +12,7 @@ class MollaT {
     a = aa;
     b = bb;
     lon = l;
-    colorMolla=255;
+    colorMolla=0;
   } 
 
   // Calcula la forca de la molla i l'aplica a les dues particules
