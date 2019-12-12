@@ -23,6 +23,7 @@ int[] knob = new int[10];
 boolean[] buttonR = new boolean[10];
 boolean[] buttonM = new boolean[10];
 boolean[] buttonS = new boolean[10];
+final int SLIDER_MAX_VALUE = 127;
 
 color bgColor = 0;
 
