@@ -99,56 +99,38 @@ void keyPressed() {
   }
 }
 
-void keyReleased(){
+void keyReleased() {
   a.f_keyReleased();
 }
 
-void mousePressed(){
+void mousePressed() {
   a.f_mousePressed();
 }
 
-void mouseDragged(){
+void mouseDragged() {
   a.f_mouseDragged();
 }
 
-void mouseReleased(){
+void mouseReleased() {
   a.f_mouseReleased();
 }
 
 void controllerChange(int channel, int number, int value) {
-  // println("Channel:" + channel);
-  // println("Number:" + number);
-  // println("Value:" + value);
-
-  if (number % 10 == 1) {
-    slider[number / 10] = value;
-  }
-
-  if (number % 10 == 5) {
-    knob[number / 10] = value;
-  }
-
   /**
-   * Els botons que tenen la lletra 'S' son instantanis.
+   * Els botons que tenen la lletra 'S' són instantanis.
    * Serveixen per a disparar coses.
    * Posem la variable a 'true' quan és diferent de zero. 
    * Només actua mentre el botó està apretat.
-   */
-  if (number % 10 == 4) {
-    buttonS[number / 10] = (value != 0);
-  }
-  
-  /**
+   * 
    * Els botons que tenen la lletra 'M' o 'R' canvien cada vegada
    * de 0 a 1 o de 1 a 0 (a vegades, de 0 a 127 o de 127 a 0).
    * Quan és diferent de zero, posem la variable a 'true'.
    * Quan el botó té llum, el valor és diferent de zero.
    */
-  if (number % 10 == 3) {
-    buttonM[number / 10] = (value != 0);
-  }
 
-  if (number % 10 == 2) {
-    buttonR[number / 10] = (value != 0);
-  }
+  if (number % 10 == 1) slider[number / 10] = value;
+  if (number % 10 == 5) knob[number / 10] = value;
+  if (number % 10 == 4) buttonS[number / 10] = (value != 0);
+  if (number % 10 == 3) buttonM[number / 10] = (value != 0);
+  if (number % 10 == 2) buttonR[number / 10] = (value != 0);
 }
