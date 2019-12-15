@@ -23,9 +23,10 @@ class Cercle_MV {
 
 class Clicks_MV{
 
-  int num = 3;
+  int num = 7;
   int[] posX ;
   int[] posY;
+  color[] c;
   int r = 5;
   int[] trans;
   boolean[] op;
@@ -33,29 +34,45 @@ class Clicks_MV{
   Clicks_MV(){
     posX = new int[num];
     posY = new int[num];
+    c = new color[num];
     
-    posX[0] = width/2 - 150; 
-    posY[0] = height/2 - 50; 
+    for(int i = 0; i<num; i++){
+      c[i] = color(0, random(100,255), random(100,255));
+    }
     
-    posX[1] = width/2; 
-    posY[1] = height/2 - 150; 
-    
-    posX[2] = width/2 + 150; 
-    posY[2] = height/2 - 50; 
+     
   }
   
   void display(int sel, int count){
     
-    noFill();
+    posX[0] = width/2 - 100-slider[1]; 
+    posY[0] = height/2 - 70; 
     
-    stroke(255,150-count);
+    posX[1] = width/2; 
+    posY[1] = height/2 - 100-slider[1]; 
+    
+    posX[2] = width/2 + 100+slider[1]; 
+    posY[2] = height/2 - 70; 
+    
+    posX[3] = width/2 - 100-slider[1]; 
+    posY[3] = height/2 + 70; 
+    
+    posX[4] = width/2; 
+    posY[4] = height/2 + 100+slider[1]; 
+    
+    posX[5] = width/2 + 100+slider[1]; 
+    posY[5] = height/2 + 70;
+    
+    noStroke();
+    fill(c[sel],150-count);
     ellipse(posX[sel],posY[sel], r+count,r+count);
     
-    stroke(255,100-count);
+    fill(c[sel],100-count);
     ellipse(posX[sel],posY[sel], 10+r+count, 10+r+count);
     
-    stroke(255, 50-count);
+    fill(c[sel], 50-count);
     ellipse(posX[sel],posY[sel], 30+r+count, 30+r+count);
+    
   }
     
     
@@ -84,7 +101,7 @@ class Diana_MV {
     diamAux = diam;
     int i;
     for (i=0; i<nCercles; i++) {
-      cercles[i] = new Cercle_MV(diamAux, color(0, 100+(i*30), 100 + (i*20)));
+      cercles[i] = new Cercle_MV(diamAux, color(255,100));
 
       diamAux -= (diamAux/nCercles); 
     }
@@ -123,11 +140,17 @@ class Palm_MV {
     pushMatrix();
     inc += 0.033;
     
-    llargada = slider[1]; // la llargada depen de l'slider
     
+    if(llargada < 100){
+      llargada = knob[1]; // la llargada depen de l'slider
+    }
+    if(knob[1] < 100){
+      llargada = knob[1]; 
+    }
     angle = sin(inc)/20.0 ;
     
     translate(width/2,height/2); 
+   
     
     for (int i = 0; i < linies; i++) { 
       linia(llargada, angle); 
@@ -145,7 +168,7 @@ class Palm_MV {
       stroke(0,7*i,5*i);
       strokeWeight(1); 
       
-      line(20,0,20,100);
+      line(500,0,200,100);
       
       translate(0, 5); 
       rotate(angle);
@@ -192,12 +215,12 @@ class Stars_MV{
     for (int i = 0; i< numStars; i++){
         
       if(op[i]){
-          trans[i] = trans[i] + (int)random(0,3);
+          trans[i] = trans[i] + (int)random(0,10);
           if(trans[i] > 240){
             op[i] = false;
           }
         }else{
-          trans[i] = trans[i] - (int)random(0,3);
+          trans[i] = trans[i] - (int)random(0,10);
           if(trans[i]< 20){
             op[i] = true;
           }
@@ -209,4 +232,78 @@ class Stars_MV{
     }
   }
 
+}
+
+class Ball_MV {
+  
+  color col;
+  PVector pos; //vector de posició
+  PVector vel; //vector de velocitat
+  
+  float radi;
+  int vida,type;
+  
+
+  Ball_MV(int var) {
+    col = color(0,random(125,255),random(125,255));
+    radi = random(5,25);
+    pos = new PVector(random(0,width),random(0, height));
+    vel = new PVector(random(-2,2), random(-2,2));
+    vida = 250;
+    type= var;
+    
+  }
+  
+  void run(){
+    mou();
+    dibuixa();
+  }
+
+  void mou() {
+    pos.add(vel);
+    
+    if(pos.x <= radi){
+      pos.x = radi;
+      vel.x = -vel.x;
+    }
+    if(pos.x >= width-radi){
+      pos.x = width-radi;
+      vel.x = -vel.x;
+    }
+    if(pos.y <= radi){
+      pos.y = radi;
+      vel.y = -vel.y;
+    }
+    if(pos.y >= height-radi){
+      pos.y = height-radi;
+      vel.y = -vel.y;
+    }
+    vida--;
+  }
+
+  void dibuixa() {
+    
+    if (type == 1){
+      ellipseMode(RADIUS);
+      stroke(col, vida/2);
+      noFill();
+      ellipse(pos.x, pos.y, radi,radi);
+      
+    }else if (type == 2){
+      ellipseMode(RADIUS);
+      noStroke();
+      fill(col, vida/2);
+      ellipse(pos.x, pos.y, radi,radi);
+      
+    }
+    
+  }
+  
+  boolean haMort() {
+    if (vida <= 0) {
+      return true;
+    } else {
+      return false;
+    }
+  }
 }

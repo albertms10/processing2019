@@ -16,6 +16,9 @@ class Maria extends Animacio{
   int[] sel;
   int[] count;
   
+  //Balls aleatories
+  ArrayList<Ball_MV> b = new ArrayList<Ball_MV>();
+  
   
 
   Maria(String nameSong) {
@@ -33,12 +36,13 @@ class Maria extends Animacio{
     stars =  new Stars_MV(127);
     
     click =  new Clicks_MV();
-    sel = new int[3];
-    count = new int[3];
-    for(int i=0; i <3; i++){
+    sel = new int[6];
+    count = new int[6];
+    for(int i=0; i <6; i++){
       sel[i] = count[i] = -1;
     }
-   
+    
+     
     initCercles();
     
   }
@@ -75,7 +79,7 @@ class Maria extends Animacio{
   
   void display() {
     
-    println(slider[1]);
+   
     background(0);
        
     palm.display();
@@ -83,7 +87,7 @@ class Maria extends Animacio{
     stars.display(slider[2]);
     
     
-    for(int i=0; i<3;i++){
+    for(int i=0; i<6;i++){
       if(sel[i] != -1 && count[i] != -1){
          if(count[i] < 100){
           click.display(sel[i],count[i]);
@@ -91,6 +95,23 @@ class Maria extends Animacio{
          }else{
            sel[i]=count[i]= -1;
          }
+      }
+    }
+    
+    for(int j=0; j< knob[3]/10; j++){
+      
+      if(buttonS[3]){
+        b.add(new Ball_MV(1));
+      }else{
+        b.add(new Ball_MV(2));
+      }
+    }
+    
+    for (int i=b.size()-1; i>=0; i--) {
+      Ball_MV boles = b.get(i);
+      boles.run();
+      if (boles.haMort()){
+        b.remove(i);
       }
     }
     
@@ -120,13 +141,28 @@ class Maria extends Animacio{
         count[2] = 0;
         
       }
+      if (key == 'a') {
+        sel[3] = 3;
+        count[3] = 0;
+        
+      }
+      if (key == 's') {
+        sel[4] = 4;
+        count[4] = 0;
+        
+      }
+      if (key == 'd') {
+        sel[5] = 5;
+        count[5] = 0;
+        
+      }
   }
   
   void f_keyReleased() {}
 
   void f_mousePressed() {}
 
-  void f_mouseDrgged() {}
+  void f_mouseDragged() {}
 
   void f_mouseReleased() {}
 
