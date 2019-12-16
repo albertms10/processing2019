@@ -31,7 +31,7 @@ class Nom extends Animacio {
 
   void f_mousePressed() {}
 
-  void f_mouseDrgged() {}
+  void f_mouseDragged() {}
 
   void f_mouseReleased() {}
 }
