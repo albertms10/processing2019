@@ -12,6 +12,8 @@ class Tomas extends Animacio {
   float yoff = 0.0;
   float velY=0.5;
   int cx;
+  int wx=0;
+  int hy=0;
 
   Tomas(String songName) {
     super(songName);
@@ -56,7 +58,7 @@ class Tomas extends Animacio {
     colorMolla=slider[3]; //COLOR MOLLA
 
     active3=buttonS[4]; //RESET
-    
+
     active4=buttonS[2];//
     active5=buttonS[5];
     active6=buttonM[5];
@@ -70,7 +72,7 @@ class Tomas extends Animacio {
       beginShape(); 
       velY=velY+0.1;
       float xoff = 0;  // Option #1: 2D Noise
-      
+
 
       // Iterate over horizontal pixels
       for (float x = 0; x <= width; x += 10) {
@@ -89,15 +91,21 @@ class Tomas extends Animacio {
       vertex(0, height);
       endShape(CLOSE);
     }
-    
-    
+
+
     ///////////////////////////////////////////////RESET///////////////////////////////////////
     if (active3) {
       fill(0);
-      
-      rect(0, 0, width, height);
+      wx=wx+2;
+      hy=hy+2;
+
+      ellipse(width/2, height/2, wx, hy);
     }
-    
+    if(active3==false){
+      wx=0;
+      hy=0;
+    }
+
     ///////////////////////////////////VISUALS MOLLA INTERACTIU /////////////////////////////////
     if (active1) {
       println("ACTIVE 1:"+active1);
@@ -117,9 +125,9 @@ class Tomas extends Animacio {
       }
     }
 
-    
-    
-    
+
+
+
     ///////////////////////////////////// PARTICULES ONES POS RANDOM//////////////////////////
     if (active5) {
       background(0);

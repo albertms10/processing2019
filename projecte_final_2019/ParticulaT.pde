@@ -156,6 +156,9 @@ class ParticulaTT {
       // Here we are doing so as a quick and easy way to reverse the direction of our object when it reaches the edge.
       velocitat.y *= -1;
       posicio.y = height;
+    }else if (posicio.y < 0) {
+      velocitat.y *= -1;
+      posicio.y = 0;
     }
   }
 }
