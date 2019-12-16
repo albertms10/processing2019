@@ -1,14 +1,20 @@
 class AlbertM extends Animacio {
-  int n;
-  ArrayList<Fly_AM> flies = new ArrayList<Fly_AM>();
+  ArrayList<Fly> flies;
+  ArrayList<Float> amplitudes;
   float songLength;
-  Wind wind;
+  float highestAmp;
+  ThunderStorm thunderStorm;
+  WaterDrop waterDrop;
+
+  static final int SPEED = 5;
 
   AlbertM(String songName) {
     super(songName);
 
-    n = 1;
-    wind = new Wind(10);
+    flies = new ArrayList<Fly>();
+    amplitudes = new ArrayList<Float>();
+    waterDrop = new WaterDrop();
+    thunderStorm = new ThunderStorm();
 
     init();
     song.play();
@@ -16,31 +22,72 @@ class AlbertM extends Animacio {
 
   void init() {
     colorMode(HSB, 360, 100, 100, 100);
-    bgColor = color(360);
-    background(bgColor);
 
     fft = new FFT(song.bufferSize(), song.sampleRate());
     songLength = song.length();
+    amplitudes.add(height * .9);
 
-    for (int i = 0; i < n; i++) {
-      flies.add(new Fly_AM(width * .1, height * .1));
-    }
+    flies.add(new Fly(width * .1, height * .1));
   }
 
   void run() {
+    if (frameCount % 60 * (int) random(6, 12) == 0) addFly();
   }
 
   void display() {
-    background(bgColor);
+    float currentSongPosition = song.position();
+    background(map(currentSongPosition, 0, songLength, 0, 330), 70, 70);
 
-    wind.draw();
+    if (frameCount % 10 == 0) {
+      highestAmp = highestAmp();
+      amplitudes.add(highestAmp);
+    }
 
-    for (Fly_AM fly : flies) {
-      fly
-        .move(map(song.position(), 0, songLength, 0, width), map(highestAmp(), 1100, 0, 0, height))
-        .setRad(10)
-        .draw();
-      fill(360);
+    waterDrop.draw();
+    thunderStorm.draw();
+
+    for (int i = 0; i < flies.size(); i++) {
+      Fly fly = flies.get(i);
+
+      if (waterDrop.drops.size() > 0) {
+        for (int j = waterDrop.drops.size() - 1; j >= 0; j--) {
+          Drop drop = waterDrop.drops.get(j);
+          if (drop.dropDie == null) {
+            if (drop.pos.dist(fly.pos) <= fly.rad) drop.die();
+          } else {
+            if (drop.dropDie.life >= DropDie.MAX_LIFE) {
+              drop.dropDie = null;
+              waterDrop.drops.remove(drop);
+            }
+          }
+        }
+      }
+
+      if (thunderStorm.thunders.size() > 0) {
+        for (int j = thunderStorm.thunders.size() - 1; j >= 0; j--) {
+          Thunder thunder = thunderStorm.thunders.get(j);
+          if (fly.flyDie == null) {
+            if (thunder.x - thunder.extension <= fly.pos.x + fly.rad
+              && thunder.x + thunder.extension >= fly.pos.x - fly.rad) fly.die();
+          } else {
+            if (fly.pos.y > height) {
+              fly.flyDie = null;
+              flies.remove(fly);
+            }
+          }
+        }
+      }
+
+      if (fly.flyDie == null) {
+        fly
+          .move(
+          map(currentSongPosition, 0, songLength / SPEED, width * .03, width * .97), 
+          map(amplitudes.get((int) (amplitudes.size() - 1 - fly.timeOffset / SPEED)), 1100, 0, height * .03, height * .97)
+          )
+          .draw();
+      } else {
+        fly.flyDie.draw();
+      }
     }
   }
 
@@ -62,6 +109,7 @@ class AlbertM extends Animacio {
   }
 
   void f_keyPressed() {
+    addFly();
   }
 
   void f_keyReleased() {
@@ -74,5 +122,13 @@ class AlbertM extends Animacio {
   }
 
   void f_mouseReleased() {
+  }
+
+  boolean addFly() {
+    return flies.add(new Fly(
+      width * .1, 
+      random(height *.1, height * .9), 
+      map(song.position(), 0, songLength, 0, width))
+      );
   }
 }
