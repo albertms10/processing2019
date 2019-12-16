@@ -1,52 +1,71 @@
-class Fly_AM {
+class Fly {
   PVector pos;
   float rad;
   float angle;
-  Wings_AM wings;
+  float timeOffset;
+  Wings wings;
+  FlyDie flyDie;
 
-  Fly_AM(float x, float y) {
+  final float EASING = 0.01;
+  final float ROTATION_AMOUNT = 1.2;
+
+  Fly(float x, float y) {
     pos = new PVector(x, y);
+    rad = random(10, 20);
     angle = 0;
-    wings = new Wings_AM(this);
+    wings = new Wings(this);
   }
 
-  Fly_AM(float x, float y, float rad) {
+  Fly(float x, float y, float timeOffset) {
     this(x, y);
-    this.rad = rad;
+    this.timeOffset = timeOffset;
   }
 
-  Fly_AM() {
-    this(random(width), random(height), 20);
-  }
-
-  Fly_AM setX(float x) {
-    pos.x = x;
+  Fly setX(float x) {
+    pos.x = x % width;
     return this;
   }
 
-  Fly_AM setY(float y) {
+  Fly setY(float y) {
     pos.y = y;
     return this;
   }
 
-  Fly_AM setPos(float x, float y) {
+  Fly incrementX(float dx) {
+    pos.x += dx;
+    return this;
+  }
+
+  Fly incrementY(float dy) {
+    pos.y += dy;
+    return this;
+  }
+
+  Fly setPos(float x, float y) {
     setX(x);
     setY(y);
     return this;
   }
 
-  Fly_AM setRad(float rad) {
+  Fly setRad(float rad) {
     this.rad = rad;
     return this;
   }
 
-  Fly_AM move(float desiredX, float desiredY) {
-    setX(desiredX);
+  Fly incrementAngle(float dAngle) {
+    angle = angle + dAngle;
+    return this;
+  }
 
-    if (desiredY > pos.y) {
-      setY(pos.y + desiredY / pos.y);
+  Fly move(float desiredX, float desiredY) {
+    setX(desiredX - timeOffset * AlbertM.SPEED - width * .03);
+    float dY = desiredY - pos.y;
+    incrementY(dY * EASING);
+
+    if (abs(angle) <= ROTATION_AMOUNT) {
+      incrementAngle((dY > 0 ? 1 : -1) * ROTATION_AMOUNT * EASING);
     } else {
-      setY(pos.y - desiredY / pos.y);
+      angle -= .1;
     }
 
     return this;
@@ -62,96 +81,200 @@ class Fly_AM {
     fill(41);
     ellipse(0, 0, rad, rad);
 
-    wings.move().draw();
+    wings
+      .move()
+      .draw();
 
     popMatrix();
   }
-}
 
-class Wind {
-  int n;
-  ArrayList<Wave> wind;
-
-  Wind(int n) {
-    wind = new ArrayList<Wave>();
-
-    for (int i = 0; i < n; i++) {
-      wind.add(new Wave());
-    }
-  }
-  
-  void draw() {
-    for (int i = 0; i < map(slider[1], 0, 127, 1, wind.size()); i++) {
-      wind.get(i).draw();
-    }
+  void die() {
+    flyDie = new FlyDie(this);
   }
 }
 
-class Wave {
-  int xSpacing = 1;   // How far apart should each horizontal location be spaced
-  int w;              // Width of entire wave
+class FlyDie {
+  Fly fly;
+  float easing;
 
-  float theta = 0.0;   // Start angle at 0
-  float amplitude = 20.0;  // Height of wave
-  float period = 1000.0;  // How many pixels before the wave repeats
-  float dx;  // Value for incrementing X, a function of period and xspacing
-  float[] yValues;  // Using an array to store height values for the wave
-  float yOffset;
-
-  Wave() {
-    w = width + 16;
-    dx = xSpacing * TWO_PI / period;
-    yValues = new float[w / xSpacing];
-    yOffset = random(height / 2);
-  }
-
-  void draw() {
-    calcWave();
-    renderWave();
-  }
-
-  void calcWave() {
-    // Increment theta (try different values for 'angular velocity' here
-    theta += 0.02;
-
-    // For every x value, calculate a y value with sine function
-    float x = theta;
-    for (int i = 0; i < yValues.length; i++) {
-      yValues[i] = sin(x) * amplitude;
-      x += dx;
-    }
-  }
-
-  void renderWave() {
-    noStroke();
-
-    for (int x = 0; x < yValues.length; x++) {
-      float xPos = x * xSpacing;
-      fill(0, map(xPos, 0, width, 0, 40));
-      ellipse(xPos, height / 2 + yValues[x] + yOffset, 1, 1);
-    }
-  }
-}
-
-class Wings_AM {
-  Fly_AM fly;
-
-  Wings_AM(Fly_AM fly) {
+  FlyDie(Fly fly) {
     this.fly = fly;
+    this.easing = 1.001;
   }
 
-  Wings_AM move() {
+  void draw() {
+    easing *= 1.001;
+    fly.pos.mult(easing);
+    fly.draw();
+  }
+}
+
+class Wings {
+  Fly fly;
+  float pos;
+  float w;
+  float h;
+
+  Wings(Fly fly) {
+    this.fly = fly;
+    this.w = fly.rad * .7;
+  }
+
+  Wings move() {
+    pos = -fly.rad / 3;
+    h = (frameCount / 3) % 3 == 0 ? w : w / 2;
     return this;
   }
 
   void draw() {
     noStroke();
     fill(360, 80);
+    ellipse(pos, pos, w, h);
+  }
+}
+
+class ThunderStorm {
+  ArrayList<Thunder> thunders;
+
+  ThunderStorm() {
+    thunders = new ArrayList<Thunder>();
+  }
+
+  void draw() {
+    if (buttonM[1]) {
+      thunders.add(new Thunder());
+      buttonM[1] = false;
+    }
+    
+    // if (frameCount % 100 == 0) thunders.add(new Thunder(random(width)));
+
+    for (int i = thunders.size() - 1; i >= 0; i--) {
+      Thunder thunder = thunders.get(i);
+      if (thunder.life <= 0) thunders.remove(thunder);
+      thunder.draw();
+    }
+  }
+}
+
+class Thunder {
+  float x;
+  float extension;
+  float life;
+  AudioPlayer thunderSound;
+
+  Thunder(float x) {
+    this.x = x;
+    extension = 5;
+    life = 100;
+    thunderSound = minim.loadFile("thunder.mp3");
+    thunderSound.play();
+    thunderSound.setGain(.01);
+  }
+
+  Thunder() {
+    this(map(knob[1], 0, SLIDER_MAX_VALUE, width * .05, width * .95));
+  }
+
+  void draw() {
+    noStroke();
+    fill(360, life - 50);
+    rect(0, 0, width, height);
+
+    stroke(360, life);
+    strokeWeight(extension * 2);
+    line(x + random(-5, 5), 0, x + random(-5, 5), height);
+
+    life--;
+  }
+}
+
+class WaterDrop {
+  float frequency;
+  ArrayList<Drop> drops;
+
+  WaterDrop() {
+    drops = new ArrayList<Drop>();
+    this.frequency = 10;
+  }
+
+  void draw() {
+    frequency = map(slider[2], 0, SLIDER_MAX_VALUE, 10, 1);
+    if (frameCount % (int) frequency == 0) drops.add(new Drop());
+
+    for (int i = drops.size() - 1; i >= 0; i--) {
+      Drop drop = drops.get(i);
+
+      if (drop.pos.y > height) {
+        drops.remove(drop);
+      } else {
+        if (drop.dropDie == null) {
+          drop
+            .move()
+            .draw();
+        } else {
+          drop.dropDie.draw();
+        }
+      }
+    }
+  }
+}
+
+class Drop {
+  PVector pos;
+  float len;
+  float offset;
+  float increment;
+  DropDie dropDie;
+
+  Drop() {
+    this.pos = new PVector(random(width), 0);
+    this.len = random(5, 30);
+    offset = random(5, 10);
+    increment = random(1, 1.05);
+  }
+
+  Drop move() {
+    offset *= increment;
+    pos.x += offset *.1;
+    pos.y += offset;
+    return this;
+  }
+
+  Drop draw() {
+    stroke(360, 50);
+    strokeWeight(2);
+    line(pos.x, pos.y, pos.x, pos.y + len);
+
+    return this;
+  }
+
+  void die() {
+    dropDie = new DropDie(this);
+  }
+}
+
+class DropDie {
+  Drop drop;
+  float life;
+  float dieSpeed;
+  static final float MAX_LIFE = 100;
+
+  DropDie(Drop drop) {
+    this.drop = drop;
+    life = 0;
+    dieSpeed = random(1.5, 3);
+  }
+
+  void draw() {
+    noFill();
+    strokeWeight(drop.len / 5);
+    stroke(360, (MAX_LIFE - life) / AlbertM.SPEED);
     ellipse(
-      -fly.rad / 3, 
-      -fly.rad / 3, 
-      fly.rad / 2, 
-      fly.rad / 2
+      drop.pos.x, 
+      drop.pos.y, 
+      drop.len / 2 + life, 
+      drop.len / 2 + life
       );
+    life += dieSpeed;
   }
 }
