@@ -6,7 +6,7 @@ class Fly {
   Wings wings;
   FlyDie flyDie;
 
-  final float EASING = 0.01;
+  final float EASING = .01;
   final float ROTATION_AMOUNT = 1.2;
 
   Fly(float x, float y) {
@@ -146,7 +146,7 @@ class ThunderStorm {
       buttonM[1] = false;
     }
     
-    // if (frameCount % 100 == 0) thunders.add(new Thunder(random(width)));
+    if (frameCount % 600 == 0) thunders.add(new Thunder(random(width), color(0, 70, 70)));
 
     for (int i = thunders.size() - 1; i >= 0; i--) {
       Thunder thunder = thunders.get(i);
@@ -160,24 +160,26 @@ class Thunder {
   float x;
   float extension;
   float life;
+  color lightColor;
   AudioPlayer thunderSound;
 
-  Thunder(float x) {
+  Thunder(float x, color lightColor) {
     this.x = x;
     extension = 5;
     life = 100;
     thunderSound = minim.loadFile("thunder.mp3");
     thunderSound.play();
     thunderSound.setGain(.01);
+    this.lightColor = lightColor;
   }
 
   Thunder() {
-    this(map(knob[1], 0, SLIDER_MAX_VALUE, width * .05, width * .95));
+    this(map(knob[1], 0, SLIDER_MAX_VALUE, width * .05, width * .95), 360);
   }
 
   void draw() {
     noStroke();
-    fill(360, life - 50);
+    fill(lightColor, life - 50);
     rect(0, 0, width, height);
 
     stroke(360, life);
@@ -235,7 +237,7 @@ class Drop {
 
   Drop move() {
     offset *= increment;
-    pos.x += offset *.1;
+    pos.x += offset * .1;
     pos.y += offset;
     return this;
   }
