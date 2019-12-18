@@ -12,6 +12,8 @@ class Anna extends Animacio {
   ASPunt[] mods;
   boolean changeColor;
 
+  ArrayList<StarPower> starPowers;
+
   int mode = 1;
   //0 = R(1) moviment
   //1 = M(1) no moviment
@@ -31,6 +33,7 @@ class Anna extends Animacio {
     imageMode(CENTER);
     img = loadImage("data/pineappleAnna.png");
     noStroke();
+
     //int wideCount = 5;
     int wideCount = width / unit;
     //int highCount = 5;
@@ -44,14 +47,17 @@ class Anna extends Animacio {
         mods[index++] = new ASPunt(x*unit, y*unit, unit/2, unit/2, random(0.05, 0.8), unit, this);
       }
     }
-    println(highCount*wideCount);
-    println(index);
+    //println(highCount*wideCount);
+    //println(index);
+
+    starPowers = new ArrayList<StarPower>();
   }
 
   /**
    * Mètode per a càlculs, si cal
    */
   void run() {
+
     if (buttonM[1]) {
       mode=0;
       //println("mode = 0");
@@ -60,7 +66,7 @@ class Anna extends Animacio {
       mode=1;
       //println("mode = 1");
     }
-    if(buttonM[3]){
+    if (buttonM[3]) {
       init();
     }
     if (buttonS[2]) {
@@ -72,7 +78,7 @@ class Anna extends Animacio {
         mode=3;
         //println("mode = 3");
       }
-    }else{
+    } else {
       mode=1;
     }
   }
@@ -82,6 +88,21 @@ class Anna extends Animacio {
    */
   void display() {
     background(0);
+
+    if (buttonR[3]) {
+      starPowers.add(new StarPower());
+    }
+
+    for (int i = 0; i< starPowers.size(); i++) {
+      StarPower starPower = starPowers.get(i);
+      if (starPower.life <= 100) starPower.bright();
+    }
+    for (int i = starPowers.size() - 1; i >= 0; i--) {
+      StarPower starPower = starPowers.get(i);
+      if (starPower.life > 100) //starPower.bright();
+      starPowers.remove(starPower);
+    }
+
     beat.detect(song.mix);
 
     checkSnare();
