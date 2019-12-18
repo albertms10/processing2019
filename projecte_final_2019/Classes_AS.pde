@@ -123,3 +123,40 @@ class ASPunt {
     }
   }
 }
+
+class StarPower {
+  float life;
+  int rad1; //30
+  int rad2; //70
+  color colorEstrella;
+
+  StarPower() {
+    life = 0;
+    rad1 = 0;
+    rad2 = 40;
+    colorEstrella = color(random(255),random(255), random(150,255));
+  }
+
+  void bright() {
+    fill(colorEstrella, (100-life)*255/100);
+    star(width / 2, height / 2, rad1, rad2, 5);
+    life++;
+    rad1 = rad1 + 5;
+    rad2 = rad2 + 10;
+  }
+}
+
+void star(float x, float y, float radius1, float radius2, int npoints) {
+  float angle = TWO_PI / npoints;
+  float halfAngle = angle/2.0;
+  beginShape();
+  for (float a = 0; a < TWO_PI; a += angle) {
+    float sx = x + cos(a) * radius2;
+    float sy = y + sin(a) * radius2;
+    vertex(sx, sy);
+    sx = x + cos(a+halfAngle) * radius1;
+    sy = y + sin(a+halfAngle) * radius1;
+    vertex(sx, sy);
+  }
+  endShape(CLOSE);
+}
