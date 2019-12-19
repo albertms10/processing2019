@@ -28,8 +28,8 @@ final int SLIDER_MAX_VALUE = 127;
 color bgColor = 0;
 
 void setup() {
-  size(1000, 800, P2D);
-  // fullScreen(P2D);
+  //size(1000, 800, P2D);
+   fullScreen(P2D);
   
   minim = new Minim(this);
 
@@ -100,19 +100,19 @@ void keyPressed() {
 }
 
 void keyReleased() {
-  a.f_keyReleased();
+  if (animationOn) a.f_keyReleased();
 }
 
 void mousePressed() {
-  a.f_mousePressed();
+  if (animationOn) a.f_mousePressed();
 }
 
 void mouseDragged() {
-  a.f_mouseDragged();
+  if (animationOn) a.f_mouseDragged();
 }
 
 void mouseReleased() {
-  a.f_mouseReleased();
+  if (animationOn) a.f_mouseReleased();
 }
 
 void controllerChange(int channel, int number, int value) {
