@@ -28,10 +28,14 @@ class AlbertM extends Animacio {
     amplitudes.add(height * .9);
 
     flies.add(new Fly(width * .1, height * .1));
+    
+    buttonS[1] = true;
+    knob[1] = SLIDER_MAX_VALUE / 2;
+    knob[2] = SLIDER_MAX_VALUE / 2;
   }
 
   void run() {
-    if (frameCount % 60 * (int) random(6, 12) == 0) addFly();
+    if (buttonS[1] && frameCount % (int) map(knob[1], 0, SLIDER_MAX_VALUE, 60 * 3, 20) == 0) addFly();
   }
 
   void display() {
@@ -68,7 +72,8 @@ class AlbertM extends Animacio {
           Thunder thunder = thunderStorm.thunders.get(j);
           if (fly.flyDie == null) {
             if (thunder.x - thunder.extension <= fly.pos.x + fly.rad
-              && thunder.x + thunder.extension >= fly.pos.x - fly.rad) fly.die();
+              && thunder.x + thunder.extension >= fly.pos.x - fly.rad
+              && thunder.life > 50) fly.die();
           } else {
             if (fly.pos.y > height) {
               fly.flyDie = null;
@@ -78,17 +83,25 @@ class AlbertM extends Animacio {
         }
       }
 
-      if (fly.flyDie == null) {
-        fly
-          .move(
-          map(currentSongPosition, 0, songLength / SPEED, width * .03, width * .97), 
-          map(amplitudes.get((int) (amplitudes.size() - 1 - fly.timeOffset / SPEED)), 1100, 0, height * .03, height * .97)
-          )
-          .draw();
+      if (buttonM[1]) fly.finish(random(-150, width + 150), -height);
+
+      if (fly.endPos == null) {
+        if (fly.flyDie == null) {
+          fly
+            .move(
+            map(currentSongPosition, 0, songLength / SPEED, width * .03, width * .97), 
+            map(amplitudes.get((int) (amplitudes.size() - 1 - fly.timeOffset / SPEED)), 1100, 0, height * .03, height * .97)
+            )
+            .draw();
+        } else {
+          fly.flyDie.draw();
+        }
       } else {
-        fly.flyDie.draw();
+        fly.move().draw();
       }
     }
+    
+    if (buttonM[1]) buttonM[1] = false;
   }
 
   float highestAmp() {
