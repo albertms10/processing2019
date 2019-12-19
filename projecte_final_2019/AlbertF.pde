@@ -5,24 +5,18 @@ class AlbertF extends Animacio {
   float gir;
   float [] x_star = new float[1500];
   float [] y_star = new float[1500];
-
   int x=10;
   int y=10;
   float num = 0;
-
   int n=50;
   float[] x_random, y_random;
   float[] vx_random, vy_random;
   float maxDist_random;
 
-
   MoverAF m;
   AttractorAF a;
 
   PImage img;
-
-
-  //float offset = 100;
 
   AlbertF(String songName) {
     super(songName);
@@ -30,12 +24,9 @@ class AlbertF extends Animacio {
     song.play();
   }
 
-
-
   void init() {
     img = loadImage("logo_og.png");
     img.resize(width, height);
-    //println(img.width);
 
     background(200);
     noStroke();
@@ -43,20 +34,15 @@ class AlbertF extends Animacio {
     ellipseMode(CENTER);
     kickSize = 32;
 
-
     for (int i=0; i<1500; i++) {
       x_star[i]=random(-width, width);
       y_star[i]=random(-height, height);
     }
-
-
     x_random = new float[n];
     y_random = new float[n];
     vx_random = new float[n];
     vy_random = new float[n];
     maxDist_random=290;
-
-
     for (int w=0; w<n; w++) {
 
       x_random[w] = random(width);
@@ -79,11 +65,8 @@ class AlbertF extends Animacio {
   }
 
   void display() {
-
     fons_degradat();
-
     random_walker();
-
     cercles();
     graella();
     sol_principi();
@@ -109,16 +92,12 @@ class AlbertF extends Animacio {
   void random_walker() {
     for (int e=0; e<n; e++) {
       for (int k=e+1; k<n; k++) {
-        
-         
         noStroke();
         float h2 = knob[5]+20;
         fill(h2+15, 90, 80, knob[2]);
         // fill(0, 0, 100, knob[2]);
         ellipse(x_random[k], y_random[k], 20, 20);
-        //line(x[i],y[i],x[k],y[k]);
-        
-        
+        //line(x[i],y[i],x[k],y[k]);       
         float d=dist(x_random[e], y_random[e], x_random[k], y_random[k]);
         if (d<maxDist_random) {
           float h=map(d, 0, maxDist_random, 0, 360);
@@ -126,19 +105,13 @@ class AlbertF extends Animacio {
           strokeWeight(1); 
           line(x_random[e], y_random[e], x_random[k], y_random[k]);
         }
-        
-        
-       
       }
     }
     for (int i=0; i<n; i++) {
-
       vx_random[i] += (knob[3]/500.0);
       vy_random[i] += (knob[3]/500.0);
-
       x_random[i]=x_random[i]+vx_random[i];
       y_random[i]=y_random[i]+vy_random[i];
-
       if (x_random[i]>=width||x_random[i]<=0) {
         vx_random[i] = -vx_random[i];
       }
@@ -211,7 +184,6 @@ class AlbertF extends Animacio {
         ellipse(width/2+r2*cos(angle)-25, height/2+r2*sin(angle)-10, 11, 11);
         ellipse(width/2+r2*cos(angle)+20, height/2+r2*sin(angle)-20, 11, 11);
         ellipse(width/2+r2*cos(angle)+15, height/2+r2*sin(angle)+20, 11, 11);
-        //println(kickSize);
       }
     }
   }
