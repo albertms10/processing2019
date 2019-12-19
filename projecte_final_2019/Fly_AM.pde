@@ -1,5 +1,6 @@
 class Fly {
   PVector pos;
+  PVector endPos;
   float rad;
   float angle;
   float timeOffset;
@@ -57,6 +58,15 @@ class Fly {
     return this;
   }
 
+  Fly move() {
+    if (endPos != null) {
+      incrementX((endPos.x - pos.x) * EASING);
+      incrementY((endPos.y - pos.y) * EASING);
+    }
+    
+    return this;
+  }
+
   Fly move(float desiredX, float desiredY) {
     setX(desiredX - timeOffset * AlbertM.SPEED - width * .03);
     float dY = desiredY - pos.y;
@@ -76,9 +86,11 @@ class Fly {
 
     translate(pos.x, pos.y);
     rotate(angle);
+    scale(map(slider[1], 0, SLIDER_MAX_VALUE, .8, 2));
 
     noStroke();
-    fill(41);
+    if (flyDie == null) fill(41);
+    else fill(55, random(10, 70), 100);
     ellipse(0, 0, rad, rad);
 
     wings
@@ -91,20 +103,28 @@ class Fly {
   void die() {
     flyDie = new FlyDie(this);
   }
+
+  void finish(float x, float y) {
+    endPos = new PVector(x, y);
+  }
 }
 
 class FlyDie {
   Fly fly;
-  float easing;
+  float easingX;
+  float easingY;
 
   FlyDie(Fly fly) {
     this.fly = fly;
-    this.easing = 1.001;
+    this.easingX = 1.0005;
+    this.easingY = 1.001;
   }
 
   void draw() {
-    easing *= 1.001;
-    fly.pos.mult(easing);
+    easingX *= 1.001;
+    easingY *= 1.001;
+    fly.pos.x *= easingX;
+    fly.pos.y *= easingY;
     fly.draw();
   }
 }
@@ -141,12 +161,12 @@ class ThunderStorm {
   }
 
   void draw() {
-    if (buttonM[1]) {
+    if (buttonR[3]) {
       thunders.add(new Thunder());
-      buttonM[1] = false;
+      buttonR[3] = false;
     }
-    
-    if (frameCount % 600 == 0) thunders.add(new Thunder(random(width), color(0, 70, 70)));
+
+    if (frameCount % 1800 == 0) thunders.add(new Thunder(random(width), color(0, 70, 70)));
 
     for (int i = thunders.size() - 1; i >= 0; i--) {
       Thunder thunder = thunders.get(i);
@@ -174,7 +194,7 @@ class Thunder {
   }
 
   Thunder() {
-    this(map(knob[1], 0, SLIDER_MAX_VALUE, width * .05, width * .95), 360);
+    this(map(knob[3], 0, SLIDER_MAX_VALUE, width * .05, width * .95), color(map(slider[3], 0, SLIDER_MAX_VALUE, 0, 360), 70, 70));
   }
 
   void draw() {
@@ -192,16 +212,26 @@ class Thunder {
 
 class WaterDrop {
   float frequency;
+  float offset;
   ArrayList<Drop> drops;
 
   WaterDrop() {
+    frequency = 10;
+    offset = 0;
     drops = new ArrayList<Drop>();
-    this.frequency = 10;
   }
 
   void draw() {
-    frequency = map(slider[2], 0, SLIDER_MAX_VALUE, 10, 1);
-    if (frameCount % (int) frequency == 0) drops.add(new Drop());
+    frequency = map(slider[2], 0, SLIDER_MAX_VALUE, 10, .2);
+    offset = map(knob[2], 0, SLIDER_MAX_VALUE, -6, 6);
+
+    if (frequency >= 1) {
+      if (frameCount % (int) frequency == 0) drops.add(new Drop(this));
+    } else {
+      for (int i = 0; i < 1 / frequency; i++) {
+        drops.add(new Drop(this));
+      }
+    }
 
     for (int i = drops.size() - 1; i >= 0; i--) {
       Drop drop = drops.get(i);
@@ -224,28 +254,30 @@ class WaterDrop {
 class Drop {
   PVector pos;
   float len;
-  float offset;
+  float fallSpeed;
   float increment;
+  WaterDrop waterDrop;
   DropDie dropDie;
 
-  Drop() {
+  Drop(WaterDrop waterDrop) {
     this.pos = new PVector(random(width), 0);
     this.len = random(5, 30);
-    offset = random(5, 10);
     increment = random(1, 1.05);
+    fallSpeed = random(5, 10);
+    this.waterDrop = waterDrop;
   }
 
   Drop move() {
-    offset *= increment;
-    pos.x += offset * .1;
-    pos.y += offset;
+    fallSpeed *= increment;
+    pos.x += waterDrop.offset;
+    pos.y += fallSpeed;
     return this;
   }
 
   Drop draw() {
     stroke(360, 50);
     strokeWeight(2);
-    line(pos.x, pos.y, pos.x, pos.y + len);
+    line(pos.x, pos.y, pos.x + waterDrop.offset * len * .01, pos.y + len);
 
     return this;
   }
@@ -264,7 +296,7 @@ class DropDie {
   DropDie(Drop drop) {
     this.drop = drop;
     life = 0;
-    dieSpeed = random(1.5, 3);
+    dieSpeed = random(2, 4);
   }
 
   void draw() {
