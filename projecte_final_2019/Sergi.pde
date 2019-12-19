@@ -1,6 +1,3 @@
-
-
-
 class Sergi extends Animacio {
   float radi1, radi2, roda1, roda2, roda3, roda4, i, slider3,slider4;
   int x;
@@ -146,7 +143,7 @@ class Sergi extends Animacio {
       }
       
     }
-    
+    if(frameCount>=1500 && frameCount<2300){
     if (frameCount%10==0) {
     
         image(img1, random(0, width),random(0,height));
@@ -163,7 +160,7 @@ class Sergi extends Animacio {
         
     }
     
-    
+    } 
   }
 
   /**
