@@ -45,23 +45,23 @@ class Clicks_MV{
   
   void display(int sel, int count){
     
-    posX[0] = width/2 - 100-slider[1]; 
-    posY[0] = height/2 - 70; 
+    posX[0] = width/2 - 200-slider[1]; 
+    posY[0] = height/2 - 100; 
     
     posX[1] = width/2; 
-    posY[1] = height/2 - 100-slider[1]; 
+    posY[1] = height/2 - 200-slider[1]; 
     
-    posX[2] = width/2 + 100+slider[1]; 
-    posY[2] = height/2 - 70; 
+    posX[2] = width/2 + 200+slider[1]; 
+    posY[2] = height/2 - 100; 
     
-    posX[3] = width/2 - 100-slider[1]; 
-    posY[3] = height/2 + 70; 
+    posX[3] = width/2 - 200-slider[1]; 
+    posY[3] = height/2 + 100; 
     
     posX[4] = width/2; 
-    posY[4] = height/2 + 100+slider[1]; 
+    posY[4] = height/2 + 200+slider[1]; 
     
-    posX[5] = width/2 + 100+slider[1]; 
-    posY[5] = height/2 + 70;
+    posX[5] = width/2 + 200+slider[1]; 
+    posY[5] = height/2 + 100;
     
     noStroke();
     fill(c[sel],150-count);
